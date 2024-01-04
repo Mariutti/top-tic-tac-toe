@@ -66,23 +66,12 @@ const gameController = (() => {
 	return { game };
 })();
 
-// console.log(GameBoard.gameBoard);
+console.log('initial game board', GameBoard.gameBoard);
 
 const playerOne = createPlayer("x");
 playerOne.increasePoints();
 playerOne.increasePoints();
 playerOne.getPoints();
-
-// console.log("----------------");
-
-// console.log(GameBoard.gameBoard);
-// console.log("----------------");
-
-// console.log(gameFlow.showTurn());
-// console.log(gameFlow.getSquare(4));
-// console.log(GameBoard.gameBoard);
-// gameFlow.changeTurn();
-// console.log("----------------");
 
 gameController.game(1);
 gameController.game(2);
