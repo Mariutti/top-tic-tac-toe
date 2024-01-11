@@ -2,7 +2,7 @@ console.log("olá mundo");
 const startButton = document.querySelector("#startButton");
 
 startButton.addEventListener("click", () => {
-	gameFlow();
+	gamePlay();
 });
 
 function chooseNumOfPlayers() {
@@ -27,21 +27,48 @@ function chooseNumOfPlayers() {
 
 function player() {
 	let mark;
-	return { mark };
+	let points = 0;
+	let cells = [];
+
+	function getMark(){
+		return mark;
+	}
+
+	function setMark(markToSet){
+		mark = markToSet;
+	}
+
+	function getCells() {
+		return cells;
+	}
+
+	function setCells(cell) {
+		cells.push(cell);
+		cells.sort();
+	}
+
+	function getPoints() {
+		return points;
+	}
+
+	function increasePoints() {
+		points++;
+	}
+
+	return { getMark, setMark, getCells, setCells, getPoints, increasePoints };
 }
 
-function chooseMarksFunc() {
-	let playerOne = player();
-	let playerTwo = player();
+function chooseMarksFunc(playerOne, playerTwo) {
+	playerOne.setMark(prompt("Please, select 'x' or 'o'"))
 
-	playerOne.mark = prompt("Please, select 'x' or 'o'");
-
-	if (playerOne.mark) {
+	if (playerOne.getMark()) {
 		if (
-			playerOne.mark.toLowerCase() === "x" ||
-			playerOne.mark.toLowerCase() === "o"
+			playerOne.getMark().toLowerCase() === "x" ||
+			playerOne.getMark().toLowerCase() === "o"
 		) {
-			playerOne.mark == "x" ? (playerTwo.mark = "o") : (playerTwo.mark = "x");
+			playerOne.getMark() == "x" ? (playerTwo.setMark("o")) : (playerTwo.setMark("x"));
+			console.log(`jogador 1 seleciona a marca ${playerOne.getMark()}`);
+			console.log(`jogador 2 fica com a marca ${playerTwo.getMark()}`);
 			return { playerOne, playerTwo };
 		} else {
 			return chooseMarksFunc();
@@ -52,8 +79,12 @@ function chooseMarksFunc() {
 	}
 }
 
-function gameFlow() {
+function gamePlay() {
 	console.clear();
+	let playerOne = player();
+	let playerTwo = player();
+
+	let timePlayer = playerOne;
 
 	// Escolhendo o número de jogadores (p vs IA ou p vs p)
 	const numOfPlayers = chooseNumOfPlayers();
@@ -62,69 +93,88 @@ function gameFlow() {
 	}
 
 	// Jogador 01 escolhe a marca que usará
-	const chooseMarks = chooseMarksFunc();
-
-	console.log("");
-
-	console.log(`jogador 1 seleciona a marca ${chooseMarks.playerOne.mark}`);
-	console.log(`jogador 2 fica com marca ${chooseMarks.playerTwo?.mark}`);
+	const chooseMarks = chooseMarksFunc(playerOne, playerTwo);
 
 	console.log("");
 
 	// gerando o tabuleiro
 	const GameBoard = (function () {
-		console.log('gerando board');
+		console.log("gerando board");
 		let gameBoard = [];
 		for (let i = 0; i < 9; i++) {
 			gameBoard.push(i);
 		}
-	
+		let markedCells = [];
+		let winArrays = [[0, 1, 2],[3, 4, 5],[6, 7, 8],[0, 3, 6],[1, 4, 7], [2, 5, 8],[0, 4, 8],[2, 4, 6]]
+
 		function gameMove(i) {
-			if (gameBoard.indexOf(i) != -1) {
-				const string = `Moved square- [${i}]`;
-				gameBoard.splice(gameBoard.indexOf(i), 1);
-				return string;
+			if (gameBoard.indexOf(i) != -1 && markedCells.indexOf(i) == -1) {
+				const string = `Marked square- [${i}]`;
+				markCell(gameBoard[i]);
+				// return string;
+				return true;
 			} else {
-				return `Cannot mark square ${i}`;
+				// return `Cannot mark square ${i}`;
+				return false;
 			}
 		}
-	
+
+		function markCell(cell) {
+			markedCells.push(cell);
+			markedCells.sort();
+		}
+
 		return {
 			gameBoard,
+			markedCells,
+			winArrays,
 			gameMove,
 		};
 	})();
 
-	console.log(GameBoard.gameBoard);
+	console.log(`Marked cells: ${GameBoard.markedCells}`);
 
 	console.log("");
 
-	console.log("loop de jogadas");
-	console.log("jogo verifica quais as células estão disponíveis");
+	console.log("gamming loop");
+	let i = 0;
+	function gameFlow(cell) {
+		if (!GameBoard.gameMove(cell)) {
+			console.log(`player time: ${timePlayer.getMark()}`);
+			console.log(
+				`player ${timePlayer.getMark()} tried to mark cell ${cell}, but it's already marked`
+			);
+			console.log("try again");
+		} else {
+			timePlayer.setCells(cell);
+			console.log(`player time: ${timePlayer.getMark()}`);
+			// console.log(`jogada ${i} finalizada`)
+			console.log(`${timePlayer.getMark()} marked cells`, timePlayer.getCells());
+			console.log("total marked cells", GameBoard.markedCells);
+			if(GameBoard.winArrays.includes(timePlayer.getCells())){
+				console.log(`${timePlayer.getMark()} wins!`)
+				return
+			}
+			timePlayer === playerOne
+				? (timePlayer = playerTwo)
+				: (timePlayer = playerOne);
+			console.log(`jogada ${i} finalizada`);
+			i++;
+		}
+	}
+	gameFlow(6);
 
-	console.log("");
+	gameFlow(1);
 
-	console.log("jogador 01 faz jogada");
-	console.log("jogo salva jogada/célula marcada");
-	console.log("jogo verifica de jogador 01 ganhou");
+	gameFlow(7);
 
-	console.log("");
+	gameFlow(3);
 
-	console.log("jogo muda a vez para jogador 2");
+	gameFlow(8);
 
-	console.log("");
-
-	console.log("jogador 02 faz jogada");
-	console.log("jogo salva jogada/célula marcada");
-	console.log("jogo verifica de jogador 02 ganhou");
-
-	console.log("");
-
-	console.log("jogo muda a vez para jogador 1");
-
-	console.log(
-		"jogo repete os passos no loop de jogada até alguém vencer ou haver empate"
-	);
+	gameFlow(2);
+	gameFlow(5);
+	gameFlow(0);
 
 	console.log("");
 }
