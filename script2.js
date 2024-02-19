@@ -30,11 +30,11 @@ function player() {
 	let points = 0;
 	let cells = [];
 
-	function getMark(){
+	function getMark() {
 		return mark;
 	}
 
-	function setMark(markToSet){
+	function setMark(markToSet) {
 		mark = markToSet;
 	}
 
@@ -59,14 +59,16 @@ function player() {
 }
 
 function chooseMarksFunc(playerOne, playerTwo) {
-	playerOne.setMark(prompt("Please, select 'x' or 'o'"))
+	playerOne.setMark(prompt("Please, select 'x' or 'o'"));
 
 	if (playerOne.getMark()) {
 		if (
 			playerOne.getMark().toLowerCase() === "x" ||
 			playerOne.getMark().toLowerCase() === "o"
 		) {
-			playerOne.getMark() == "x" ? (playerTwo.setMark("o")) : (playerTwo.setMark("x"));
+			playerOne.getMark() == "x"
+				? playerTwo.setMark("o")
+				: playerTwo.setMark("x");
 			console.log(`jogador 1 seleciona a marca ${playerOne.getMark()}`);
 			console.log(`jogador 2 fica com a marca ${playerTwo.getMark()}`);
 			return { playerOne, playerTwo };
@@ -105,7 +107,16 @@ function gamePlay() {
 			gameBoard.push(i);
 		}
 		let markedCells = [];
-		let winArrays = [[0, 1, 2],[3, 4, 5],[6, 7, 8],[0, 3, 6],[1, 4, 7], [2, 5, 8],[0, 4, 8],[2, 4, 6]]
+		let winArrays = [
+			[0, 1, 2],
+			[3, 4, 5],
+			[6, 7, 8],
+			[0, 3, 6],
+			[1, 4, 7],
+			[2, 5, 8],
+			[0, 4, 8],
+			[2, 4, 6],
+		];
 
 		function gameMove(i) {
 			if (gameBoard.indexOf(i) != -1 && markedCells.indexOf(i) == -1) {
@@ -139,6 +150,7 @@ function gamePlay() {
 	console.log("gamming loop");
 	let i = 0;
 	function gameFlow(cell) {
+		// while( i <= 9 ){
 		if (!GameBoard.gameMove(cell)) {
 			console.log(`player time: ${timePlayer.getMark()}`);
 			console.log(
@@ -149,18 +161,27 @@ function gamePlay() {
 			timePlayer.setCells(cell);
 			console.log(`player time: ${timePlayer.getMark()}`);
 			// console.log(`jogada ${i} finalizada`)
-			console.log(`${timePlayer.getMark()} marked cells`, timePlayer.getCells());
+			console.log(
+				`${timePlayer.getMark()} marked cells`,
+				timePlayer.getCells()
+			);
 			console.log("total marked cells", GameBoard.markedCells);
-			if(GameBoard.winArrays.includes(timePlayer.getCells())){
-				console.log(`${timePlayer.getMark()} wins!`)
-				return
+			if (
+				GameBoard.winArrays.some((arr) => {
+					return arr.toString() === timePlayer.getCells().toString();
+				})
+			) {
+				console.log(`${timePlayer.getMark()} wins!`);
+				console.log(`JOGO FINALIZADO, player ${timePlayer.getMark()} WINS`);
+				return;
 			}
 			timePlayer === playerOne
 				? (timePlayer = playerTwo)
 				: (timePlayer = playerOne);
 			console.log(`jogada ${i} finalizada`);
-			i++;
 		}
+	// }
+		// i++;
 	}
 	gameFlow(6);
 
@@ -175,6 +196,7 @@ function gamePlay() {
 	gameFlow(2);
 	gameFlow(5);
 	gameFlow(0);
+	gameFlow(4);
 
 	console.log("");
 }
