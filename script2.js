@@ -143,23 +143,29 @@ function gamePlay() {
 		};
 	})();
 
+	// jogada: jogador marca célula do tabuleiro
+	function playerMove(){
+		return prompt("Choose one cell")
+	}
+
 	console.log(`Marked cells: ${GameBoard.markedCells}`);
 
 	console.log("");
 
 	console.log("gamming loop");
 	let i = 0;
-	function gameFlow(cell) {
-		// while( i <= 9 ){
-		if (!GameBoard.gameMove(cell)) {
+	let isGameOver = false;
+	function gameFlow() {
+		// while (isGameOver === false || i <= 9) {
+			let cell = playerMove();
 			console.log(`player time: ${timePlayer.getMark()}`);
+		if (!GameBoard.gameMove(cell)) {
 			console.log(
 				`player ${timePlayer.getMark()} tried to mark cell ${cell}, but it's already marked`
 			);
 			console.log("try again");
 		} else {
 			timePlayer.setCells(cell);
-			console.log(`player time: ${timePlayer.getMark()}`);
 			// console.log(`jogada ${i} finalizada`)
 			console.log(
 				`${timePlayer.getMark()} marked cells`,
@@ -173,30 +179,31 @@ function gamePlay() {
 			) {
 				console.log(`${timePlayer.getMark()} wins!`);
 				console.log(`JOGO FINALIZADO, player ${timePlayer.getMark()} WINS`);
-				return;
+				isGameOver = true;
 			}
 			timePlayer === playerOne
 				? (timePlayer = playerTwo)
 				: (timePlayer = playerOne);
 			console.log(`jogada ${i} finalizada`);
 		}
-	// }
-		// i++;
+		i++;
 	}
-	gameFlow(6);
 
-	gameFlow(1);
+	gameFlow()
+	// gameFlow(6);
 
-	gameFlow(7);
+	// gameFlow(1);
 
-	gameFlow(3);
+	// gameFlow(7);
 
-	gameFlow(8);
+	// gameFlow(3);
 
-	gameFlow(2);
-	gameFlow(5);
-	gameFlow(0);
-	gameFlow(4);
+	// gameFlow(8);
+
+	// gameFlow(2);
+	// gameFlow(5);
+	// gameFlow(0);
+	// gameFlow(4);
 
 	console.log("");
 }
