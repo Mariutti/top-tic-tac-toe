@@ -156,11 +156,11 @@ function gamePlay() {
 	console.log(GameBoard.gameBoard);
 	let i = 0;
 	let isGameOver = false;
-	let winner = '';
+	let winner = "";
 
 	// IIEF to generate de game
 	const gameFlow = (function () {
-		while ((isGameOver != true) && (i < 9)) {
+		while (isGameOver != true && i < 9) {
 			let cell = playerMove(timePlayer.getMark());
 			console.log(`player time: ${timePlayer.getMark()}`);
 			if (!GameBoard.gameMove(cell)) {
@@ -182,7 +182,7 @@ function gamePlay() {
 					})
 				) {
 					console.log(`${timePlayer.getMark()} wins!`);
-					winner = timePlayer.getMark()
+					winner = timePlayer.getMark();
 					isGameOver = true;
 				}
 				timePlayer === playerOne
@@ -194,12 +194,12 @@ function gamePlay() {
 		}
 		console.log("inside gameflow", GameBoard.gameBoard);
 		console.log("inside gameflow", GameBoard.markedCells);
-		console.log('i', i);
-		console.log('isGameOver', isGameOver);
+		console.log("i", i);
+		console.log("isGameOver", isGameOver);
 	})();
-	if(isGameOver === false){
-		console.log(`It's a draw!`)
-	}else{		
+	if (isGameOver === false) {
+		console.log(`It's a draw!`);
+	} else {
 		console.log(`JOGO FINALIZADO, player ${winner} WINS`);
 	}
 	console.log("");
