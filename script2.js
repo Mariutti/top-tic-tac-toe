@@ -144,8 +144,8 @@ function gamePlay() {
 	})();
 
 	// jogada: jogador marca célula do tabuleiro
-	function playerMove(){
-		return prompt("Choose one cell")
+	function playerMove(player) {
+		return Number(prompt(`Please, player ${player}, choose one cell`));
 	}
 
 	console.log(`Marked cells: ${GameBoard.markedCells}`);
@@ -153,57 +153,54 @@ function gamePlay() {
 	console.log("");
 
 	console.log("gamming loop");
+	console.log(GameBoard.gameBoard);
 	let i = 0;
 	let isGameOver = false;
-	function gameFlow() {
-		// while (isGameOver === false || i <= 9) {
-			let cell = playerMove();
+	let winner = '';
+
+	// IIEF to generate de game
+	const gameFlow = (function () {
+		while ((isGameOver != true) && (i < 9)) {
+			let cell = playerMove(timePlayer.getMark());
 			console.log(`player time: ${timePlayer.getMark()}`);
-		if (!GameBoard.gameMove(cell)) {
-			console.log(
-				`player ${timePlayer.getMark()} tried to mark cell ${cell}, but it's already marked`
-			);
-			console.log("try again");
-		} else {
-			timePlayer.setCells(cell);
-			// console.log(`jogada ${i} finalizada`)
-			console.log(
-				`${timePlayer.getMark()} marked cells`,
-				timePlayer.getCells()
-			);
-			console.log("total marked cells", GameBoard.markedCells);
-			if (
-				GameBoard.winArrays.some((arr) => {
-					return arr.toString() === timePlayer.getCells().toString();
-				})
-			) {
-				console.log(`${timePlayer.getMark()} wins!`);
-				console.log(`JOGO FINALIZADO, player ${timePlayer.getMark()} WINS`);
-				isGameOver = true;
+			if (!GameBoard.gameMove(cell)) {
+				console.log(
+					`player ${timePlayer.getMark()} tried to mark cell ${cell}, but it's already marked`
+				);
+				console.log("try again");
+			} else {
+				timePlayer.setCells(cell);
+				// console.log(`jogada ${i} finalizada`)
+				console.log(
+					`${timePlayer.getMark()} marked cells`,
+					timePlayer.getCells()
+				);
+				console.log("total marked cells", GameBoard.markedCells);
+				if (
+					GameBoard.winArrays.some((arr) => {
+						return arr.toString() === timePlayer.getCells().toString();
+					})
+				) {
+					console.log(`${timePlayer.getMark()} wins!`);
+					winner = timePlayer.getMark()
+					isGameOver = true;
+				}
+				timePlayer === playerOne
+					? (timePlayer = playerTwo)
+					: (timePlayer = playerOne);
+				console.log(`jogada ${i} finalizada`);
+				i++;
 			}
-			timePlayer === playerOne
-				? (timePlayer = playerTwo)
-				: (timePlayer = playerOne);
-			console.log(`jogada ${i} finalizada`);
 		}
-		i++;
+		console.log("inside gameflow", GameBoard.gameBoard);
+		console.log("inside gameflow", GameBoard.markedCells);
+		console.log('i', i);
+		console.log('isGameOver', isGameOver);
+	})();
+	if(isGameOver === false){
+		console.log(`It's a draw!`)
+	}else{		
+		console.log(`JOGO FINALIZADO, player ${winner} WINS`);
 	}
-
-	gameFlow()
-	// gameFlow(6);
-
-	// gameFlow(1);
-
-	// gameFlow(7);
-
-	// gameFlow(3);
-
-	// gameFlow(8);
-
-	// gameFlow(2);
-	// gameFlow(5);
-	// gameFlow(0);
-	// gameFlow(4);
-
 	console.log("");
 }
