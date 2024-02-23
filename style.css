@@ -4,6 +4,10 @@
     padding: 0;
 }
 
+:root {
+    --cell-border: 10px solid black
+}
+
 .text-center {
     text-align: center;
 }
@@ -15,4 +19,29 @@
 
 .padding-medium {
     padding: 0.5rem 1.5rem;
+}
+
+.table {
+    margin: 30px auto;
+    width: 600px;
+    height: 600px;
+    display: grid;
+    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+    /* border: 1px solid black; */
+    /* padding: 5px; */
+}
+
+.cell {
+    /* padding: 10px; */
+    /* background-color: lightgreen; */
+}
+
+.mid {
+    border-top: var(--cell-border);
+    border-bottom: var(--cell-border);
+}
+
+.center {
+    border-left: var(--cell-border);
+    border-right: var(--cell-border);
 }

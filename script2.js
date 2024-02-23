@@ -5,6 +5,21 @@ startButton.addEventListener("click", () => {
 	gamePlay();
 });
 
+const cell = document.querySelectorAll('.cell')
+
+console.log(cell)
+
+function addtoev() {
+	for (let i = 0; i < cell.length; i++) {
+		cell[i].addEventListener("click", function() {
+		  alert(`You clicked cell ${i}`); 
+	  });
+	 }
+  }
+  window.addEventListener("load",function() {
+	addtoev();
+  });
+
 function chooseNumOfPlayers() {
 	let playerNumb = prompt("How many player at this game?");
 
@@ -89,10 +104,10 @@ function gamePlay() {
 	let timePlayer = playerOne;
 
 	// Escolhendo o número de jogadores (p vs IA ou p vs p)
-	const numOfPlayers = chooseNumOfPlayers();
-	if (numOfPlayers === null) {
-		return;
-	}
+	// const numOfPlayers = chooseNumOfPlayers();
+	// if (numOfPlayers === null) {
+	// 	return;
+	// }
 
 	// Jogador 01 escolhe a marca que usará
 	const chooseMarks = chooseMarksFunc(playerOne, playerTwo);
