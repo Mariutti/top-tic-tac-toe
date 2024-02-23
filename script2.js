@@ -7,18 +7,25 @@ startButton.addEventListener("click", () => {
 
 const cell = document.querySelectorAll('.cell')
 
-console.log(cell)
-
-function addtoev() {
+const clickCell = (function() {
 	for (let i = 0; i < cell.length; i++) {
-		cell[i].addEventListener("click", function() {
-		  alert(`You clicked cell ${i}`); 
+		cell[i].addEventListener("click", () => {
+		  console.log(`You clicked cell ${i}`);
+		  return i
 	  });
 	 }
-  }
-  window.addEventListener("load",function() {
-	addtoev();
-  });
+  })()
+
+// function clickCell() {
+// 	for (let i = 0; i < cell.length; i++) {
+// 		cell[i].addEventListener("click", () => {
+// 		  console.log(`You clicked cell ${i}`);
+// 		  return i
+// 	  });
+// 	 }
+//   }
+
+
 
 function chooseNumOfPlayers() {
 	let playerNumb = prompt("How many player at this game?");
