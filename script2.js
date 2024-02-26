@@ -5,16 +5,16 @@ startButton.addEventListener("click", () => {
 	gamePlay();
 });
 
-const cell = document.querySelectorAll('.cell')
+const cell = document.querySelectorAll(".cell");
 
-const clickCell = (function() {
+const clickCell = function () {
 	for (let i = 0; i < cell.length; i++) {
 		cell[i].addEventListener("click", () => {
-		  console.log(`You clicked cell ${i}`);
-		  return i
-	  });
-	 }
-  })()
+			console.log(`You clicked cell ${i}`);
+			return i;
+		});
+	}
+};
 
 // function clickCell() {
 // 	for (let i = 0; i < cell.length; i++) {
@@ -24,8 +24,6 @@ const clickCell = (function() {
 // 	  });
 // 	 }
 //   }
-
-
 
 function chooseNumOfPlayers() {
 	let playerNumb = prompt("How many player at this game?");
@@ -190,6 +188,9 @@ function gamePlay() {
 					`player ${timePlayer.getMark()} tried to mark cell ${cell}, but it's already marked`
 				);
 				console.log("try again");
+			} else if (cell === NaN) {
+				// cell = Number(prompt(`Please, player ${player}, choose one cell`))
+				console.log("pqp");
 			} else {
 				timePlayer.setCells(cell);
 				// console.log(`jogada ${i} finalizada`)
