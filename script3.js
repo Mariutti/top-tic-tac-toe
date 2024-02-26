@@ -1,7 +1,7 @@
 console.log("olá mundo");
 const startButton = document.querySelector("#startButton");
 const arr = [];
-
+let count = 0;
 let winArrays = [
 	[0, 1, 2],
 	[3, 4, 5],
@@ -15,41 +15,58 @@ let winArrays = [
 
 startButton.addEventListener("click", () => {
 	console.log(arr);
-	console.log('Player One',playerOne.getCells())
-	console.log('Player Two',playerTwo.getCells())
+	console.log("Player One", playerOne.getCells());
+	console.log("Player Two", playerTwo.getCells());
 	// gamePlay();
 });
 
 const cells = document.querySelectorAll(".cell");
 
-
 let playerOne = player();
-playerOne.setMark('x')
+playerOne.setMark("x");
 let playerTwo = player();
-playerTwo.setMark('o')
+playerTwo.setMark("o");
 
 let timePlayer;
-if(!timePlayer){
-	timePlayer = playerOne
+if (!timePlayer) {
+	timePlayer = playerOne;
 }
-
+let winner = "";
 const clickCell = function (arr) {
-	let cell
+	let cell = "";
 	for (let i = 0; i < cells.length; i++) {
 		cells[i].addEventListener("click", () => {
 			console.log(`You clicked cell ${i}`);
 			arr.push(i);
 			arr.sort();
-			console.log(timePlayer.getMark())
+			console.log(timePlayer.getMark());
 			cell = i;
-			timePlayer.setCells(cell)
+			timePlayer.setCells(cell);
+			count++;
+			if (
+				winArrays.some((arr) => {
+					return arr.toString() === timePlayer.getCells().toString();
+				})
+			) {
+				isGameOver = true;
+				winner = timePlayer.getMark();
+				return showWinner();
+			}
+			if (count >= 9) {
+				console.log(`It's a draw!`);
+				// } else {
+				// 	console.log(`JOGO FINALIZADO, player ${winner} WINS`);
+			}
 			timePlayer === playerOne
-			? (timePlayer = playerTwo)
-			: (timePlayer = playerOne);
+				? (timePlayer = playerTwo)
+				: (timePlayer = playerOne);
 		});
 	}
 };
 
+function showWinner() {
+	console.log(`Player ${timePlayer.getMark()} wins!!`);
+}
 
 function player() {
 	let mark;
@@ -84,9 +101,14 @@ function player() {
 	return { getMark, setMark, getCells, setCells, getPoints, increasePoints };
 }
 
-
-
+let isGameOver = false;
 
 (function gamePlay() {
 	clickCell(arr);
+
+	// if (isGameOver === false) {
+	// 	console.log(`It's a draw!`);
+	// } else {
+	// 	console.log(`JOGO FINALIZADO, player ${winner} WINS`);
+	// }
 })();
