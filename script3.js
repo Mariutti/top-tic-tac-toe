@@ -17,6 +17,7 @@ startButton.addEventListener("click", () => {
 	console.log(arr);
 	console.log("Player One", playerOne.getCells());
 	console.log("Player Two", playerTwo.getCells());
+	console.log("count = ", count);
 	// gamePlay();
 });
 
@@ -27,6 +28,13 @@ playerOne.setMark("x");
 let playerTwo = player();
 playerTwo.setMark("o");
 
+function markCell(mark) {	
+	const cellClass = '.'+mark
+	const xMark = document.querySelectorAll(cellClass);
+	xMark.forEach((el) => {
+		el.innerText = mark;
+	});
+}
 let timePlayer;
 if (!timePlayer) {
 	timePlayer = playerOne;
@@ -36,30 +44,40 @@ const clickCell = function (arr) {
 	let cell = "";
 	for (let i = 0; i < cells.length; i++) {
 		cells[i].addEventListener("click", () => {
-			console.log(`You clicked cell ${i}`);
-			arr.push(i);
-			arr.sort();
-			console.log(timePlayer.getMark());
-			cell = i;
-			timePlayer.setCells(cell);
-			count++;
-			if (
-				winArrays.some((arr) => {
-					return arr.toString() === timePlayer.getCells().toString();
-				})
-			) {
-				isGameOver = true;
-				winner = timePlayer.getMark();
-				return showWinner();
+			console.log(`Player ${timePlayer.getMark()} clicked cell ${i}`);
+			if (arr.includes(i)) {
+				console.log(`Cell ${i} already marked`);
+				console.log("try again");
+			} else {
+				cells[i].classList.add(`${timePlayer.getMark()}`);
+				markCell(timePlayer.getMark())
+				
+				arr.push(i);
+				arr.sort();
+				cell = i;
+				timePlayer.setCells(cell);
+				count++;
+				if (
+					winArrays.some((arr) => {
+						return arr.toString() === timePlayer.getCells().toString();
+					})
+				) {
+					isGameOver = true;
+					winner = timePlayer.getMark();
+					// cells.forEach((cell)=>{
+					// 	cell.classList.remove('board')
+					// })
+					return showWinner();
+				}
+				if (count >= 9) {
+					console.log(`It's a draw!`);
+					// } else {
+					// 	console.log(`JOGO FINALIZADO, player ${winner} WINS`);
+				}
+				timePlayer === playerOne
+					? (timePlayer = playerTwo)
+					: (timePlayer = playerOne);
 			}
-			if (count >= 9) {
-				console.log(`It's a draw!`);
-				// } else {
-				// 	console.log(`JOGO FINALIZADO, player ${winner} WINS`);
-			}
-			timePlayer === playerOne
-				? (timePlayer = playerTwo)
-				: (timePlayer = playerOne);
 		});
 	}
 };
